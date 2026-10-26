@@ -1,0 +1,41 @@
+---
+import { SITE, type Lang } from '../config';
+import { url, useTranslations } from '../i18n/utils';
+
+interface Props {
+	lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const year = new Date().getFullYear();
+---
+
+<footer class="page site-footer meta">
+	<p>
+		© {year} {SITE.author}. {t('footer.licence')}<br />
+		{t('footer.disclaimer')}
+	</p>
+	<p class="links">
+		<a href={url(`${lang}/privacy/`)}>{t('footer.privacy')}</a>
+		<a href={SITE.repoUrl}>{t('footer.source')}</a>
+		{SITE.profileUrl && <a href={SITE.profileUrl} rel="me">LinkedIn</a>}
+	</p>
+</footer>
+
+<style>
+	.site-footer {
+		margin-top: 6rem;
+		padding-top: 1.5rem;
+		padding-bottom: 3rem;
+		/* Rule spans the content width only, not the page padding. */
+		background: linear-gradient(var(--rule), var(--rule)) no-repeat top center / calc(100% - 2 * var(--gutter)) 1px;
+	}
+	.links {
+		display: flex;
+		gap: 1.25rem;
+	}
+	a {
+		color: var(--ink-soft);
+	}
+</style>

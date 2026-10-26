@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Comment on an article
+    url: https://markus-tobler.github.io/ai-tech-blog/
+    about: Use the comment section below each article for discussion.

@@ -1,0 +1,41 @@
+---
+import PostList from '../../components/PostList.astro';
+import { LANGS } from '../../config';
+import { url, useTranslations } from '../../i18n/utils';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getListing } from '../../lib/posts';
+
+export function getStaticPaths() {
+	return LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params;
+const t = useTranslations(lang);
+const posts = await getListing(lang);
+---
+
+<BaseLayout lang={lang} title={t('site.title')} description={t('site.description')} alternates={LANGS.map((l) => ({ lang: l, href: url(`${l}/`) }))}>
+	<section class="grid intro">
+		<p class="main statement">{t('home.intro')}</p>
+	</section>
+	<section aria-labelledby="latest">
+		<h2 id="latest" class="sr-only">{t('home.latest')}</h2>
+		{posts.length > 0 ? <PostList lang={lang} posts={posts} /> : <p class="grid"><span class="main">{t('home.empty')}</span></p>}
+	</section>
+</BaseLayout>
+
+<style>
+	.intro {
+		padding: 3rem 0 4.5rem;
+	}
+	.statement {
+		font-family: var(--sans);
+		font-size: clamp(var(--step-2), 4.2vw, var(--step-4));
+		line-height: 1.12;
+		letter-spacing: -0.02em;
+		font-weight: 600;
+		margin: 0;
+		text-wrap: pretty;
+		hyphens: manual;
+	}
+</style>

@@ -1,0 +1,39 @@
+name: Weekly link check
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - run: corepack enable
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: |
+          bash scripts/install-tools.sh
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - run: pnpm build
+      - name: Check links
+        id: lychee
+        continue-on-error: true
+        run: lychee --config lychee.toml --root-dir "$PWD/dist" --format markdown --output lychee-report.md dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Open issue on broken links
+        if: steps.lychee.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          title="Broken links found ($(date -u +%Y-%m-%d))"
+          gh issue create --title "$title" --label broken-links --body-file lychee-report.md

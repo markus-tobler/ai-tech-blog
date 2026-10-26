@@ -1,0 +1,20 @@
+extends: existence
+message: "Avoid hype: '%s'. Say what it does or what changes, concretely."
+level: error
+ignorecase: true
+tokens:
+  - revolutionary
+  - revolutionise
+  - game[- ]chang(?:er|ing)
+  - unlock(?:s|ing)?
+  - unleash(?:es|ing)?
+  - supercharg(?:e|es|ing)
+  - seamless(?:ly)?
+  - cutting[- ]edge
+  - next[- ]level
+  - paradigm shift
+  - delve
+  - synergy
+  - transformative power
+  - in today's fast-paced world
+  - it's important to note

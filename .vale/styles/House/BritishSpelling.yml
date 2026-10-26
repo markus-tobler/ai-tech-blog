@@ -1,0 +1,32 @@
+extends: substitution
+message: "Use British spelling: '%s' instead of '%s'."
+level: error
+ignorecase: true
+action:
+  name: replace
+swap:
+  color(s|ed|ing)?: colour$1
+  behavior(s|al)?: behaviour$1
+  favor(s|ed|ite|ites)?: favour$1
+  honor(s|ed)?: honour$1
+  organization(s|al)?: organisation$1
+  organiz(e|es|ed|ing): organis$1
+  optimiz(e|es|ed|ing|ation): optimis$1
+  prioritiz(e|es|ed|ing|ation): prioritis$1
+  realiz(e|es|ed|ing): realis$1
+  recogniz(e|es|ed|ing): recognis$1
+  standardiz(e|es|ed|ing|ation): standardis$1
+  operationaliz(e|es|ed|ing): operationalis$1
+  democratiz(e|es|ed|ing|ation): democratis$1
+  utiliz(e|es|ed|ing|ation): utilis$1
+  analyz(e|es|ed|ing): analys$1
+  center(s|ed)?: centre$1
+  catalog(s)?: catalogue$1
+  modeling: modelling
+  labeled: labelled
+  canceled: cancelled
+  traveled: travelled
+  fulfill(s)?: fulfil$1
+  enroll(s)?: enrol$1
+  defense: defence
+  gray: grey

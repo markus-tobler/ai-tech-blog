@@ -1,0 +1,307 @@
+/*
+  Design tokens and base typography.
+  Idea: calm, left-aligned Swiss grid. Grotesk for structure, serif for reading.
+  Each topic has its own colour; it marks posts as a vertical lane.
+*/
+
+:root {
+	color-scheme: light dark;
+
+	--paper: #f3f5f4;
+	--ink: #16211d;
+	--ink-soft: #4a5752;
+	--rule: #d3dbd7;
+	--link: #1d5c78;
+	--code-bg: #e7ecea;
+	--focus: #1d5c78;
+
+	--topic-ai-technology: #2f5d8c;
+	--topic-ai-transformation: #6a4a98;
+	--topic-citizen-development: #2d7653;
+	--topic-ai-enablement: #9a6417;
+
+	--sans: var(--font-sans), system-ui, sans-serif;
+	--serif: var(--font-serif), Georgia, serif;
+	--mono: ui-monospace, 'Cascadia Code', 'SF Mono', Menlo, Consolas, monospace;
+
+	/* Modular scale 1.25 on a 18px base */
+	--step--1: 0.875rem;
+	--step-0: 1.125rem;
+	--step-1: 1.406rem;
+	--step-2: 1.758rem;
+	--step-3: 2.197rem;
+	--step-4: 2.747rem;
+	--step-5: 3.433rem;
+
+	--measure: 40rem;
+	--meta-col: 11rem;
+	--gutter: clamp(1rem, 4vw, 2.5rem);
+	--page: 64rem;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--paper: #111816;
+		--ink: #e3e9e6;
+		--ink-soft: #9daba5;
+		--rule: #2a3531;
+		--link: #86bfd9;
+		--code-bg: #1a2320;
+		--focus: #86bfd9;
+
+		--topic-ai-technology: #84abd9;
+		--topic-ai-transformation: #b8a0e2;
+		--topic-citizen-development: #7cc4a0;
+		--topic-ai-enablement: #e0ae62;
+	}
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	-webkit-text-size-adjust: 100%;
+	text-size-adjust: 100%;
+}
+
+body {
+	margin: 0;
+	background: var(--paper);
+	color: var(--ink);
+	font-family: var(--serif);
+	font-size: var(--step-0);
+	line-height: 1.65;
+	font-kerning: normal;
+	font-variant-numeric: oldstyle-nums proportional-nums;
+	overflow-wrap: break-word;
+	hyphens: auto;
+	hyphenate-limit-chars: 10 4 4;
+}
+
+h1,
+h2,
+h3,
+h4 {
+	font-family: var(--sans);
+	font-weight: 700;
+	line-height: 1.15;
+	letter-spacing: -0.01em;
+	hyphens: manual;
+	text-wrap: balance;
+	margin: 2.2em 0 0.6em;
+}
+h1 {
+	font-size: var(--step-4);
+	letter-spacing: -0.02em;
+	margin-top: 0;
+}
+h2 {
+	font-size: var(--step-2);
+}
+h3 {
+	font-size: var(--step-1);
+}
+h4 {
+	font-size: var(--step-0);
+}
+
+p,
+ul,
+ol,
+blockquote,
+pre,
+table,
+figure {
+	margin: 0 0 1.2em;
+}
+
+a {
+	color: var(--link);
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.18em;
+}
+a:hover {
+	text-decoration-thickness: 2px;
+}
+:focus-visible {
+	outline: 3px solid var(--focus);
+	outline-offset: 2px;
+}
+
+strong {
+	font-weight: 600;
+}
+
+blockquote {
+	margin-left: 0;
+	padding-left: 1.2em;
+	border-left: 3px solid var(--rule);
+	color: var(--ink-soft);
+	font-style: italic;
+}
+
+hr {
+	border: 0;
+	border-top: 1px solid var(--rule);
+	margin: 2.5em 0;
+}
+
+code {
+	font-family: var(--mono);
+	font-size: 0.86em;
+	background: var(--code-bg);
+	padding: 0.1em 0.3em;
+	border-radius: 3px;
+}
+pre {
+	font-size: var(--step--1);
+	line-height: 1.55;
+	padding: 1em 1.2em;
+	overflow-x: auto;
+	border-radius: 4px;
+	background: var(--code-bg) !important;
+}
+pre code {
+	background: none;
+	padding: 0;
+	font-size: inherit;
+}
+/* Shiki dual themes */
+@media (prefers-color-scheme: dark) {
+	.astro-code,
+	.astro-code span {
+		color: var(--shiki-dark) !important;
+		font-style: var(--shiki-dark-font-style) !important;
+		font-weight: var(--shiki-dark-font-weight) !important;
+	}
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	font-family: var(--sans);
+	font-size: var(--step--1);
+	font-variant-numeric: lining-nums tabular-nums;
+}
+th,
+td {
+	text-align: left;
+	padding: 0.5em 0.75em 0.5em 0;
+	border-bottom: 1px solid var(--rule);
+	vertical-align: top;
+}
+th {
+	font-weight: 600;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+}
+figcaption {
+	font-family: var(--sans);
+	font-size: var(--step--1);
+	color: var(--ink-soft);
+	margin-top: 0.5em;
+}
+
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+.skip-link {
+	position: absolute;
+	left: var(--gutter);
+	top: -3rem;
+	background: var(--ink);
+	color: var(--paper);
+	padding: 0.5em 1em;
+	font-family: var(--sans);
+	z-index: 10;
+}
+.skip-link:focus {
+	top: 0.5rem;
+}
+
+/* Page frame */
+.page {
+	max-width: var(--page);
+	margin: 0 auto;
+	padding: 0 var(--gutter);
+}
+
+/* Two-column grid: meta column on the left, reading column on the right */
+.grid {
+	display: grid;
+	grid-template-columns: var(--meta-col) minmax(0, var(--measure));
+	column-gap: 3rem;
+}
+.grid > .full {
+	grid-column: 1 / -1;
+}
+.grid > .main {
+	grid-column: 2;
+}
+@media (max-width: 52rem) {
+	.grid {
+		grid-template-columns: minmax(0, 1fr);
+	}
+	.grid > .main {
+		grid-column: 1;
+	}
+}
+
+/* Running text of articles and pages */
+.prose {
+	max-width: var(--measure);
+}
+.prose > :first-child {
+	margin-top: 0;
+}
+.prose li {
+	margin-bottom: 0.35em;
+}
+.prose li > ul,
+.prose li > ol {
+	margin: 0.35em 0 0;
+}
+
+.topic-mark {
+	--lane: var(--topic-ai-technology);
+}
+.topic-mark[data-topic='ai-transformation'] {
+	--lane: var(--topic-ai-transformation);
+}
+.topic-mark[data-topic='citizen-development'] {
+	--lane: var(--topic-citizen-development);
+}
+.topic-mark[data-topic='ai-enablement'] {
+	--lane: var(--topic-ai-enablement);
+}
+
+.meta {
+	font-family: var(--sans);
+	font-size: var(--step--1);
+	line-height: 1.5;
+	color: var(--ink-soft);
+	font-variant-numeric: lining-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	* {
+		animation: none !important;
+		transition: none !important;
+		scroll-behavior: auto !important;
+	}
+}

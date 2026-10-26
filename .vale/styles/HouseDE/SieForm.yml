@@ -1,0 +1,9 @@
+extends: existence
+message: "Leserinnen und Leser mit «Sie» ansprechen, nicht mit '%s'."
+level: warning
+ignorecase: false
+tokens:
+  - \b[Dd]u\b
+  - \b[Dd]ich\b
+  - \b[Dd]ir\b
+  - \b[Dd]ein(?:e|en|em|er|es)?\b

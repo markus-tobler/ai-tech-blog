@@ -1,0 +1,26 @@
+---
+import { url } from '../i18n/utils';
+// Language entry point: German browsers go to /de/, everyone else to /en/.
+const en = url('en/');
+const de = url('de/');
+---
+
+<!doctype html>
+<html lang="en-GB">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<title>Markus Tobler</title>
+		<link rel="canonical" href={new URL(en, Astro.site)} />
+		<meta name="robots" content="noindex" />
+		<script is:inline define:vars={{ en, de }}>
+			const prefersGerman = (navigator.languages || [navigator.language]).some((l) => /^de\b/i.test(l));
+			location.replace(prefersGerman ? de : en);
+		</script>
+		<meta http-equiv="refresh" content={`1; url=${en}`} />
+	</head>
+	<body>
+		<p><a href={en}>English</a></p>
+		<p><a href={de}>Deutsch</a></p>
+	</body>
+</html>

@@ -1,0 +1,6 @@
+extends: existence
+message: "Schweizer Rechtschreibung: 'ss' statt 'ß'."
+level: error
+nonword: true
+tokens:
+  - 'ß'

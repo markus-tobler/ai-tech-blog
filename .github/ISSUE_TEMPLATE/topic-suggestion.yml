@@ -1,0 +1,22 @@
+name: Topic suggestion
+description: Suggest a topic or question for a future article.
+title: 'Topic: '
+labels: [topic-suggestion]
+body:
+  - type: textarea
+    id: topic
+    attributes:
+      label: Topic or question
+      description: What would you like to read about, and what decision would it help you make?
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - AI technology
+        - AI transformation
+        - Citizen development
+        - AI enablement
+        - Not sure

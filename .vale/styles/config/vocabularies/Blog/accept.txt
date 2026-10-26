@@ -1,0 +1,11 @@
+Copilot
+Copilot Studio
+Dataverse
+Power Platform
+Power Apps
+Power Automate
+GitHub
+giscus
+GoatCounter
+low-code
+no-code

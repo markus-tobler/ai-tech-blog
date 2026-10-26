@@ -1,0 +1,14 @@
+---
+import { url, useTranslations } from '../i18n/utils';
+import BaseLayout from '../layouts/BaseLayout.astro';
+const t = useTranslations('en');
+---
+
+<BaseLayout lang="en" title={t('notFound.title')} description={t('notFound.text')} noindex>
+	<div class="grid" style="padding-top: 2.5rem">
+		<div class="main">
+			<h1>{t('notFound.title')}</h1>
+			<p><a href={url('en/')}>{t('notFound.text')}</a></p>
+		</div>
+	</div>
+</BaseLayout>

@@ -1,0 +1,44 @@
+---
+import PostList from '../../../components/PostList.astro';
+import { LANGS } from '../../../config';
+import { useTranslations } from '../../../i18n/utils';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getListing } from '../../../lib/posts';
+
+export async function getStaticPaths() {
+	const paths = [];
+	for (const lang of LANGS) {
+		const posts = await getListing(lang);
+		const tags = new Set(posts.flatMap((p) => p.data.tags));
+		for (const tag of tags) {
+			paths.push({ params: { lang, tag }, props: { posts: posts.filter((p) => p.data.tags.includes(tag)) } });
+		}
+	}
+	return paths;
+}
+
+const { lang, tag } = Astro.params;
+const { posts } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<BaseLayout lang={lang} title={`${t('tag.label')}: ${tag}`} description={`${t('tag.label')}: ${tag}`}>
+	<header class="grid list-head">
+		<h1 class="main"><span class="meta">{t('tag.label')}</span> {tag}</h1>
+	</header>
+	<PostList lang={lang} posts={posts} />
+</BaseLayout>
+
+<style>
+	.list-head {
+		padding: 2.5rem 0 2rem;
+	}
+	h1 {
+		margin: 0;
+	}
+	h1 .meta {
+		display: block;
+		font-size: var(--step--1);
+		font-weight: 400;
+	}
+</style>

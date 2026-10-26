@@ -1,0 +1,11 @@
+---
+import { SITE } from '../config';
+// Cookieless page counts. Renders nothing until a GoatCounter code is configured.
+const code = SITE.goatcounterCode;
+---
+
+{
+	code && import.meta.env.PROD && (
+		<script is:inline data-goatcounter={`https://${code}.goatcounter.com/count`} async src="https://gc.zgo.at/count.js" />
+	)
+}

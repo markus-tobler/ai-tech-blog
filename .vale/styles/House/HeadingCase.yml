@@ -1,0 +1,26 @@
+extends: capitalization
+message: "Use sentence case for headings: '%s'."
+level: warning
+scope: heading
+match: $sentence
+exceptions:
+  - AI
+  - API
+  - CoE
+  - Copilot
+  - Copilot Studio
+  - Microsoft
+  - Microsoft 365
+  - Power Platform
+  - Power Apps
+  - Power Automate
+  - Power BI
+  - Dataverse
+  - Azure
+  - GitHub
+  - LLM
+  - LLMs
+  - MCP
+  - EU
+  - AI Act
+  - I

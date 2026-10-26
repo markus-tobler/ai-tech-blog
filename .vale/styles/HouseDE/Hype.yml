@@ -1,0 +1,12 @@
+extends: existence
+message: "Kein Hype: '%s'. Konkret beschreiben, was sich ändert."
+level: error
+ignorecase: true
+tokens:
+  - revolutionär
+  - bahnbrechend
+  - game[- ]?changer
+  - nahtlos
+  - disruptiv
+  - Quantensprung
+  - Paradigmenwechsel

@@ -1,0 +1,35 @@
+---
+import type { ImageMetadata } from 'astro';
+import BaseHead, { type Alternate } from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import GoatCounter from '../components/GoatCounter.astro';
+import Header from '../components/Header.astro';
+import { LOCALES, type Lang } from '../config';
+
+interface Props {
+	lang: Lang;
+	title: string;
+	description: string;
+	image?: ImageMetadata;
+	type?: 'website' | 'article';
+	alternates?: Alternate[];
+	switchHref?: string;
+	noindex?: boolean;
+}
+
+const { lang, switchHref, ...head } = Astro.props;
+---
+
+<html lang={LOCALES[lang]}>
+	<head>
+		<BaseHead lang={lang} {...head} />
+		<GoatCounter />
+	</head>
+	<body>
+		<Header lang={lang} switchHref={switchHref} />
+		<main id="content" class="page">
+			<slot />
+		</main>
+		<Footer lang={lang} />
+	</body>
+</html>

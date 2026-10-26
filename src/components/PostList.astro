@@ -1,0 +1,97 @@
+---
+import type { Lang } from '../config';
+import { topicNames } from '../i18n/ui';
+import { formatDate, url, useTranslations } from '../i18n/utils';
+import { isLive, type Post, postUrl } from '../lib/posts';
+
+interface Props {
+	lang: Lang;
+	posts: Post[];
+}
+
+const { lang, posts } = Astro.props;
+const t = useTranslations(lang);
+const now = new Date();
+---
+
+<ol class="post-list">
+	{
+		posts.map((post) => {
+			const { title, description, pubDate, topic, draft } = post.data;
+			const foreign = post.data.lang !== lang;
+			return (
+				<li class="grid entry">
+					<div class="meta when">
+						<time datetime={pubDate.toISOString()}>{formatDate(pubDate, lang)}</time>
+						{!isLive(post, now) && <span class="flag">{draft ? t('post.draft') : t('post.scheduled')}</span>}
+					</div>
+					<article class="main topic-mark" data-topic={topic}>
+						<p class="meta topic">{topicNames[lang][topic]}</p>
+						<h2>
+							<a href={url(postUrl(post))} hreflang={foreign ? post.data.lang : undefined}>
+								{title}
+							</a>
+						</h2>
+						<p class="desc" lang={foreign ? 'en-GB' : undefined}>
+							{description}
+						</p>
+						{foreign && <p class="meta">{t('lang.only')}</p>}
+					</article>
+				</li>
+			);
+		})
+	}
+</ol>
+
+<style>
+	.post-list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.entry {
+		padding: 1.75rem 0;
+		border-top: 1px solid var(--rule);
+	}
+	.when {
+		padding-top: 0.2rem;
+		display: flex;
+		flex-direction: column;
+	}
+	.flag {
+		color: var(--ink);
+		font-weight: 600;
+	}
+	article {
+		border-left: 4px solid var(--lane);
+		padding-left: 1rem;
+	}
+	.topic {
+		margin: 0 0 0.3rem;
+		color: var(--lane);
+		font-weight: 600;
+	}
+	h2 {
+		margin: 0 0 0.4rem;
+		font-size: var(--step-2);
+	}
+	h2 a {
+		color: var(--ink);
+		text-decoration: none;
+	}
+	h2 a:hover {
+		text-decoration: underline;
+		text-decoration-thickness: 2px;
+	}
+	.desc {
+		margin: 0;
+		color: var(--ink-soft);
+	}
+	@media (max-width: 52rem) {
+		.when {
+			flex-direction: row;
+			gap: 1rem;
+			margin-bottom: 0.5rem;
+		}
+	}
+</style>

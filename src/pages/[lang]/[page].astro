@@ -1,0 +1,44 @@
+---
+import { getCollection, render } from 'astro:content';
+import { formatDate, url } from '../../i18n/utils';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+	const pages = await getCollection('pages');
+	return pages.map((page) => {
+		const [lang, slug] = page.id.split('/');
+		return { params: { lang: lang as 'en' | 'de', page: slug }, props: { page } };
+	});
+}
+
+const { lang, page: slug } = Astro.params;
+const { page } = Astro.props;
+const { Content } = await render(page);
+const { title, description, updatedDate } = page.data;
+const other = lang === 'en' ? 'de' : 'en';
+---
+
+<BaseLayout
+	lang={lang}
+	title={title}
+	description={description}
+	switchHref={url(`${other}/${slug}/`)}
+	alternates={[{ lang, href: url(`${lang}/${slug}/`) }, { lang: other, href: url(`${other}/${slug}/`) }]}
+>
+	<article class="grid static-page">
+		<div class="main">
+			<h1>{title}</h1>
+			<div class="prose"><Content /></div>
+			{updatedDate && <p class="meta"><time datetime={updatedDate.toISOString()}>{formatDate(updatedDate, lang)}</time></p>}
+		</div>
+	</article>
+</BaseLayout>
+
+<style>
+	.static-page {
+		padding-top: 2.5rem;
+	}
+	h1 {
+		margin-bottom: 1.5rem;
+	}
+</style>

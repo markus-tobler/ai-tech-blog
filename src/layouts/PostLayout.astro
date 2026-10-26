@@ -1,0 +1,177 @@
+---
+import { Image } from 'astro:assets';
+import Giscus from '../components/Giscus.astro';
+import { SITE } from '../config';
+import { topicNames } from '../i18n/ui';
+import { formatDate, otherLang, url, useTranslations } from '../i18n/utils';
+import { getTranslation, isLive, type Post, postUrl, readingMinutes } from '../lib/posts';
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+	post: Post;
+}
+
+const { post } = Astro.props;
+const { lang, title, description, pubDate, updatedDate, topic, tags, heroImage, heroAlt, aiAssistance } = post.data;
+const t = useTranslations(lang);
+const translation = await getTranslation(post, otherLang(lang));
+const alternates = [{ lang, href: url(postUrl(post)) }];
+if (translation) alternates.push({ lang: translation.data.lang, href: url(postUrl(translation)) });
+const pageUrl = new URL(url(postUrl(post)), Astro.site).href;
+const issueUrl =
+	`${SITE.repoUrl}/issues/new?template=correction.yml` +
+	`&title=${encodeURIComponent(`Correction: ${title}`)}&page=${encodeURIComponent(pageUrl)}`;
+---
+
+<BaseLayout
+	lang={lang}
+	title={title}
+	description={description}
+	image={heroImage}
+	type="article"
+	alternates={alternates}
+	switchHref={translation ? url(postUrl(translation)) : undefined}
+	noindex={!isLive(post)}
+>
+	<article class="grid post">
+		<aside class="meta post-meta topic-mark" data-topic={topic}>
+			<p>
+				<span class="label">{t('post.topic')}</span>
+				<a class="topic" href={url(`${lang}/topics/${topic}/`)}>{topicNames[lang][topic]}</a>
+			</p>
+			<p>
+				<span class="label">{t('post.published')}</span>
+				<time datetime={pubDate.toISOString()}>{formatDate(pubDate, lang)}</time>
+			</p>
+			{
+				updatedDate && (
+					<p>
+						<span class="label">{t('post.updated')}</span>
+						<time datetime={updatedDate.toISOString()}>{formatDate(updatedDate, lang)}</time>
+					</p>
+				)
+			}
+			<p>{readingMinutes(post)} {t('post.readingTime')}</p>
+			{!isLive(post) && <p class="flag">{post.data.draft ? t('post.draft') : t('post.scheduled')}</p>}
+		</aside>
+
+		<div class="main">
+			<header class="post-head topic-mark" data-topic={topic}>
+				<h1>{title}</h1>
+				<p class="lede">{description}</p>
+			</header>
+
+			{
+				heroImage && (
+					<figure class="hero">
+						<Image src={heroImage} alt={heroAlt ?? ''} width={1280} />
+					</figure>
+				)
+			}
+
+			<div class="prose">
+				<slot />
+			</div>
+
+			<footer class="post-foot meta">
+				{
+					tags.length > 0 && (
+						<p class="tags">
+							<span class="label">{t('post.tags')}</span>
+							{tags.map((tag) => (
+								<a href={url(`${lang}/tags/${tag}/`)}>{tag}</a>
+							))}
+						</p>
+					)
+				}
+				<p>{t(`ai.${aiAssistance}`)}</p>
+				<p>
+					{t('post.feedback')} <a href={issueUrl}>{t('post.feedbackLink')}</a>
+				</p>
+			</footer>
+
+			<Giscus lang={lang} />
+		</div>
+	</article>
+</BaseLayout>
+
+<style>
+	.post {
+		padding-top: 2.5rem;
+	}
+	.post-meta {
+		padding-top: 0.6rem;
+	}
+	.post-meta p {
+		margin: 0 0 1rem;
+	}
+	.label {
+		display: block;
+		color: var(--ink-soft);
+	}
+	.post-meta time,
+	.post-meta .topic {
+		color: var(--ink);
+	}
+	.post-meta .topic {
+		color: var(--lane);
+		font-weight: 600;
+		text-decoration: none;
+	}
+	.flag {
+		color: var(--ink);
+		font-weight: 600;
+	}
+	.post-head {
+		border-left: 6px solid var(--lane);
+		padding-left: 1.25rem;
+		margin-bottom: 2.5rem;
+	}
+	.lede {
+		font-size: var(--step-1);
+		line-height: 1.45;
+		color: var(--ink-soft);
+		margin: 0;
+	}
+	.hero {
+		margin: 0 0 2.5rem;
+	}
+	.hero :global(img) {
+		display: block;
+		width: 100%;
+		border-radius: 4px;
+	}
+	.post-foot {
+		margin-top: 3rem;
+		padding-top: 1.25rem;
+		border-top: 1px solid var(--rule);
+	}
+	.post-foot p {
+		margin: 0 0 0.6rem;
+	}
+	.tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.25rem 0.9rem;
+	}
+	.tags .label {
+		display: inline;
+	}
+	@media (min-width: 52.01rem) {
+		/* Pull the topic lane into the gutter so title and body text align. */
+		.post-head {
+			margin-left: calc(-1.25rem - 6px);
+		}
+	}
+	@media (max-width: 52rem) {
+		.post-meta {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0 1.5rem;
+			margin-bottom: 1rem;
+		}
+		.post-meta .label {
+			display: none;
+		}
+	}
+</style>
