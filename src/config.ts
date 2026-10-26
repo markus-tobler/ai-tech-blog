@@ -29,8 +29,8 @@ export const SITE = {
 	// Values from https://giscus.app. Comments stay hidden while repoId or categoryId is empty.
 	giscus: {
 		repo: 'markus-tobler/ai-tech-blog',
-		repoId: '',
+		repoId: 'R_kgDOVXzDNg',
 		category: 'Announcements',
-		categoryId: '',
+		categoryId: 'DIC_kwDOVXzDNs4DJppY',
 	},
 };
